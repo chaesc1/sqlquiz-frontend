@@ -3,6 +3,8 @@ import { useAuthStore } from "@/features/auth/store"
 import { LoginPage } from "@/pages/LoginPage"
 import { SignupPage } from "@/pages/SignupPage"
 import { HomePage } from "@/pages/HomePage"
+import { QuestionsPage } from "@/pages/QuestionsPage"
+import { QuestionDetailPage } from "@/pages/QuestionDetailPage"
 
 function ProtectedRoute() {
     const at = useAuthStore((s) => s.accessToken)
@@ -26,6 +28,8 @@ export const router = createBrowserRouter([
         element: <ProtectedRoute />,
         children: [
             { path: "/", element: <HomePage /> },
+            { path: "/questions", element: <QuestionsPage /> },
+            { path: "/questions/:id", element: <QuestionDetailPage /> },
         ],
     },
 ])

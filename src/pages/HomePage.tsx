@@ -1,73 +1,64 @@
-import { useMutation } from "@tanstack/react-query"
-import { toast } from "sonner"
-import { authApi } from "@/features/auth/api"
-import { useAuthStore } from "@/features/auth/store"
+import { useNavigate } from "react-router-dom"
+import { AppHeader } from "@/shared/components/AppHeader"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { ThemeToggle } from "@/shared/components/ThemeToggle"
+import {
+    Card, CardContent, CardDescription, CardHeader, CardTitle,
+} from "@/components/ui/card"
 
+/**
+ * 홈 — 도메인별 진입 카드.
+ * 활성 카드는 라우트 이동, 미구현은 disabled.
+ */
 export function HomePage() {
-    const user = useAuthStore((s) => s.user)
-    const clear = useAuthStore((s) => s.clear)
-
-    const logout = useMutation({
-        mutationFn: () => authApi.logout(),
-        onSettled: () => {
-            clear()
-            toast.success("로그아웃 되었습니다")
-        },
-    })
-
+    const navigate = useNavigate()
     return (
-        <div className="min-h-screen bg-background p-4">
-            <header className="flex justify-between items-center max-w-4xl mx-auto mb-8">
-                <h1 className="text-2xl font-bold">SQLQuiz</h1>
-                <div className="flex items-center gap-2">
-                    <span className="text-sm text-muted-foreground">{user?.email}</span>
-                    <ThemeToggle />
-                    <Button variant="outline" size="sm" onClick={() => logout.mutate()}>
-                        로그아웃
-                    </Button>
-                </div>
-            </header>
+        <div className="min-h-screen bg-background">
+            <AppHeader />
 
-            <main className="max-w-4xl mx-auto grid gap-4 md:grid-cols-2">
-                <Card>
-                    <CardHeader>
-                        <CardTitle>📚 문제 풀기</CardTitle>
-                        <CardDescription>준비 중 — M2 마일스톤</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                        <Button variant="secondary" disabled>곧 출시</Button>
-                    </CardContent>
-                </Card>
-                <Card>
-                    <CardHeader>
-                        <CardTitle>📝 시험 응시</CardTitle>
-                        <CardDescription>준비 중 — M3 마일스톤</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                        <Button variant="secondary" disabled>곧 출시</Button>
-                    </CardContent>
-                </Card>
-                <Card>
-                    <CardHeader>
-                        <CardTitle>❌ 오답노트</CardTitle>
-                        <CardDescription>준비 중 — M4 마일스톤</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                        <Button variant="secondary" disabled>곧 출시</Button>
-                    </CardContent>
-                </Card>
-                <Card>
-                    <CardHeader>
-                        <CardTitle>📊 통계</CardTitle>
-                        <CardDescription>준비 중 — M5 마일스톤</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                        <Button variant="secondary" disabled>곧 출시</Button>
-                    </CardContent>
-                </Card>
+            <main className="max-w-5xl mx-auto px-4 py-6">
+                <h1 className="text-2xl font-bold mb-1">대시보드</h1>
+                <p className="text-sm text-muted-foreground mb-6">
+                    SQLD/SQLP 자격증 시험 대비
+                </p>
+
+                <div className="grid gap-4 sm:grid-cols-2">
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>📚 문제 풀기</CardTitle>
+                            <CardDescription>카테고리/난이도로 필터해 자유롭게 풀어보기</CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                            <Button onClick={() => navigate("/questions")}>문제 보러가기</Button>
+                        </CardContent>
+                    </Card>
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>📝 시험 응시</CardTitle>
+                            <CardDescription>준비 중 — M3 마일스톤</CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                            <Button variant="secondary" disabled>곧 출시</Button>
+                        </CardContent>
+                    </Card>
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>❌ 오답노트</CardTitle>
+                            <CardDescription>준비 중 — M4 마일스톤</CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                            <Button variant="secondary" disabled>곧 출시</Button>
+                        </CardContent>
+                    </Card>
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>📊 통계</CardTitle>
+                            <CardDescription>준비 중 — M5 마일스톤</CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                            <Button variant="secondary" disabled>곧 출시</Button>
+                        </CardContent>
+                    </Card>
+                </div>
             </main>
         </div>
     )
