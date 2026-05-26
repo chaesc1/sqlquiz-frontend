@@ -5,6 +5,9 @@ import { SignupPage } from "@/pages/SignupPage"
 import { HomePage } from "@/pages/HomePage"
 import { QuestionsPage } from "@/pages/QuestionsPage"
 import { QuestionDetailPage } from "@/pages/QuestionDetailPage"
+import { ExamStartPage } from "@/pages/ExamStartPage"
+import { ExamInProgressPage } from "@/pages/ExamInProgressPage"
+import { ExamResultPage } from "@/pages/ExamResultPage"
 
 function ProtectedRoute() {
     const at = useAuthStore((s) => s.accessToken)
@@ -30,6 +33,9 @@ export const router = createBrowserRouter([
             { path: "/", element: <HomePage /> },
             { path: "/questions", element: <QuestionsPage /> },
             { path: "/questions/:id", element: <QuestionDetailPage /> },
+            { path: "/exams/new", element: <ExamStartPage /> },
+            { path: "/exams/:id", element: <ExamInProgressPage /> },
+            { path: "/exams/:id/result", element: <ExamResultPage /> },
         ],
     },
 ])

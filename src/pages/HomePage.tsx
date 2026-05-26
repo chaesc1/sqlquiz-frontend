@@ -34,10 +34,10 @@ export function HomePage() {
                     <Card>
                         <CardHeader>
                             <CardTitle>📝 시험 응시</CardTitle>
-                            <CardDescription>준비 중 — M3 마일스톤</CardDescription>
+                            <CardDescription>무작위 N문제 출제 → 자동 채점 + 오답노트 등록</CardDescription>
                         </CardHeader>
                         <CardContent>
-                            <Button variant="secondary" disabled>곧 출시</Button>
+                            <Button onClick={() => navigate("/exams/new")}>시험 시작</Button>
                         </CardContent>
                     </Card>
                     <Card>

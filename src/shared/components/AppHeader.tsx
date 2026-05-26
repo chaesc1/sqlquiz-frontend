@@ -28,9 +28,10 @@ export function AppHeader() {
         },
     })
 
-    const navItems = [
+    const navItems: { to: string; label: string; match?: string }[] = [
         { to: "/", label: "홈" },
         { to: "/questions", label: "문제" },
+        { to: "/exams/new", label: "시험", match: "/exams" },
     ]
 
     return (
@@ -40,10 +41,11 @@ export function AppHeader() {
                     <Link to="/" className="text-lg font-bold">SQLQuiz</Link>
                     <nav className="flex items-center gap-1">
                         {navItems.map((item) => {
+                            const prefix = item.match ?? item.to
                             const active =
-                                item.to === "/"
+                                prefix === "/"
                                     ? location.pathname === "/"
-                                    : location.pathname.startsWith(item.to)
+                                    : location.pathname.startsWith(prefix)
                             return (
                                 <Link key={item.to} to={item.to}
                                     className={cn(
