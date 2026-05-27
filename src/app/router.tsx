@@ -9,6 +9,7 @@ import { ExamStartPage } from "@/pages/ExamStartPage"
 import { ExamInProgressPage } from "@/pages/ExamInProgressPage"
 import { ExamResultPage } from "@/pages/ExamResultPage"
 import { WrongNotesPage } from "@/pages/WrongNotesPage"
+import { StatisticsPage } from "@/pages/StatisticsPage"
 
 function ProtectedRoute() {
     const at = useAuthStore((s) => s.accessToken)
@@ -38,6 +39,7 @@ export const router = createBrowserRouter([
             { path: "/exams/:id", element: <ExamInProgressPage /> },
             { path: "/exams/:id/result", element: <ExamResultPage /> },
             { path: "/wrong-notes", element: <WrongNotesPage /> },
+            { path: "/statistics", element: <StatisticsPage /> },
         ],
     },
 ])

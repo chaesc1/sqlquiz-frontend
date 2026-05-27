@@ -33,6 +33,7 @@ export function AppHeader() {
         { to: "/questions", label: "문제" },
         { to: "/exams/new", label: "시험", match: "/exams" },
         { to: "/wrong-notes", label: "오답노트" },
+        { to: "/statistics", label: "통계" },
     ]
 
     return (

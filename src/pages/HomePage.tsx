@@ -52,10 +52,10 @@ export function HomePage() {
                     <Card>
                         <CardHeader>
                             <CardTitle>📊 통계</CardTitle>
-                            <CardDescription>준비 중 — M5 마일스톤</CardDescription>
+                            <CardDescription>정답률·취약 카테고리·점수 추이를 차트로</CardDescription>
                         </CardHeader>
                         <CardContent>
-                            <Button variant="secondary" disabled>곧 출시</Button>
+                            <Button onClick={() => navigate("/statistics")}>통계 보기</Button>
                         </CardContent>
                     </Card>
                 </div>
