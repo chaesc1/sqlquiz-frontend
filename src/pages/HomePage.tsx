@@ -43,10 +43,10 @@ export function HomePage() {
                     <Card>
                         <CardHeader>
                             <CardTitle>❌ 오답노트</CardTitle>
-                            <CardDescription>준비 중 — M4 마일스톤</CardDescription>
+                            <CardDescription>틀린 문제 복기 + 메모, 해결 표시로 관리</CardDescription>
                         </CardHeader>
                         <CardContent>
-                            <Button variant="secondary" disabled>곧 출시</Button>
+                            <Button onClick={() => navigate("/wrong-notes")}>오답노트 보기</Button>
                         </CardContent>
                     </Card>
                     <Card>
