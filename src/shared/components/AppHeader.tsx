@@ -3,7 +3,8 @@ import { useMutation } from "@tanstack/react-query"
 import { toast } from "sonner"
 
 import { authApi } from "@/features/auth/api"
-import { useAuthStore } from "@/features/auth/store"
+import { useAuthStore, useIsAdmin } from "@/features/auth/store"
+import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { ThemeToggle } from "./ThemeToggle"
 import { cn } from "@/lib/utils"
@@ -17,6 +18,7 @@ export function AppHeader() {
     const location = useLocation()
     const user = useAuthStore((s) => s.user)
     const clear = useAuthStore((s) => s.clear)
+    const isAdmin = useIsAdmin()
 
     const logout = useMutation({
         mutationFn: () => authApi.logout(),
@@ -34,6 +36,7 @@ export function AppHeader() {
         { to: "/exams/new", label: "시험", match: "/exams" },
         { to: "/wrong-notes", label: "오답노트" },
         { to: "/statistics", label: "통계" },
+        ...(isAdmin ? [{ to: "/admin/questions", label: "관리", match: "/admin" }] : []),
     ]
 
     return (
@@ -63,6 +66,7 @@ export function AppHeader() {
                     </nav>
                 </div>
                 <div className="flex items-center gap-2">
+                    {isAdmin && <Badge variant="default" className="hidden sm:inline-flex">ADMIN</Badge>}
                     <span className="text-xs text-muted-foreground hidden sm:inline">{user?.email}</span>
                     <ThemeToggle />
                     <Button variant="outline" size="sm" onClick={() => logout.mutate()}>

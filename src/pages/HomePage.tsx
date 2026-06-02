@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom"
 import { AppHeader } from "@/shared/components/AppHeader"
+import { useIsAdmin } from "@/features/auth/store"
 import { Button } from "@/components/ui/button"
 import {
     Card, CardContent, CardDescription, CardHeader, CardTitle,
@@ -11,6 +12,7 @@ import {
  */
 export function HomePage() {
     const navigate = useNavigate()
+    const isAdmin = useIsAdmin()
     return (
         <div className="min-h-screen bg-background">
             <AppHeader />
@@ -58,6 +60,19 @@ export function HomePage() {
                             <Button onClick={() => navigate("/statistics")}>통계 보기</Button>
                         </CardContent>
                     </Card>
+                    {isAdmin && (
+                        <Card>
+                            <CardHeader>
+                                <CardTitle>🛠️ 문제 관리</CardTitle>
+                                <CardDescription>ADMIN — 문제 등록·수정·삭제</CardDescription>
+                            </CardHeader>
+                            <CardContent>
+                                <Button variant="outline" onClick={() => navigate("/admin/questions")}>
+                                    관리 페이지
+                                </Button>
+                            </CardContent>
+                        </Card>
+                    )}
                 </div>
             </main>
         </div>
