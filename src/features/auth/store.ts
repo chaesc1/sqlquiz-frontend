@@ -66,14 +66,18 @@ function decodeJwt(token: string): JwtPayload | null {
     }
 }
 
-/** 현재 AT 의 role 클레임을 반환. 없거나 만료/파싱 실패면 null. */
+/**
+ * 현재 AT 의 role 클레임을 반환. 없거나 파싱 실패면 null.
+ *
+ * exp 검사는 의도적으로 하지 않는다 — 만료된 AT 의 role 정보도 정확하며,
+ * axios 인터셉터가 다음 API 호출 시 401→reissue 로 토큰을 자동 갱신한다.
+ * 클라이언트에서 exp 를 검사하면 15분 지난 세션의 admin 탭이 깜빡임 → 잘못된 UX.
+ */
 export function useRole(): Role | null {
     const at = useAuthStore((s) => s.accessToken)
     if (!at) return null
     const payload = decodeJwt(at)
-    if (!payload) return null
-    if (payload.exp && payload.exp * 1000 < Date.now()) return null
-    return payload.role ?? null
+    return payload?.role ?? null
 }
 
 /** ROLE_ADMIN 여부. UI 라우팅/표시 분기 전용 — 권한 검증은 백엔드. */
