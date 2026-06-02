@@ -1,21 +1,38 @@
+import { lazy, Suspense } from "react"
 import { createBrowserRouter, Navigate, Outlet } from "react-router-dom"
 import { useAuthStore, useIsAdmin } from "@/features/auth/store"
+import { RouteFallback } from "@/shared/components/RouteFallback"
+
+// ── 즉시 로드 (entry-level — 첫 진입 경로) ──
 import { LoginPage } from "@/pages/LoginPage"
 import { SignupPage } from "@/pages/SignupPage"
 import { HomePage } from "@/pages/HomePage"
-import { QuestionsPage } from "@/pages/QuestionsPage"
-import { QuestionDetailPage } from "@/pages/QuestionDetailPage"
-import { ExamStartPage } from "@/pages/ExamStartPage"
-import { ExamInProgressPage } from "@/pages/ExamInProgressPage"
-import { ExamResultPage } from "@/pages/ExamResultPage"
-import { WrongNotesPage } from "@/pages/WrongNotesPage"
-import { StatisticsPage } from "@/pages/StatisticsPage"
-import { AdminQuestionsPage } from "@/pages/AdminQuestionsPage"
-import { AdminQuestionFormPage } from "@/pages/AdminQuestionFormPage"
+
+// ── lazy: 로그인 후 진입 경로 — 라우트 단위 청크 분할 ──
+// 모든 페이지가 named export 라 .then() 으로 default 형태에 맞춰준다.
+const QuestionsPage         = lazy(() => import("@/pages/QuestionsPage").then(m => ({ default: m.QuestionsPage })))
+const QuestionDetailPage    = lazy(() => import("@/pages/QuestionDetailPage").then(m => ({ default: m.QuestionDetailPage })))
+const ExamStartPage         = lazy(() => import("@/pages/ExamStartPage").then(m => ({ default: m.ExamStartPage })))
+const ExamInProgressPage    = lazy(() => import("@/pages/ExamInProgressPage").then(m => ({ default: m.ExamInProgressPage })))
+const ExamResultPage        = lazy(() => import("@/pages/ExamResultPage").then(m => ({ default: m.ExamResultPage })))
+const WrongNotesPage        = lazy(() => import("@/pages/WrongNotesPage").then(m => ({ default: m.WrongNotesPage })))
+const StatisticsPage        = lazy(() => import("@/pages/StatisticsPage").then(m => ({ default: m.StatisticsPage })))  // recharts 청크 분리
+const AdminQuestionsPage    = lazy(() => import("@/pages/AdminQuestionsPage").then(m => ({ default: m.AdminQuestionsPage })))
+const AdminQuestionFormPage = lazy(() => import("@/pages/AdminQuestionFormPage").then(m => ({ default: m.AdminQuestionFormPage })))
+
+// 보호된 영역의 Outlet 을 Suspense 로 한 번에 감싼다 — 라우트 전환마다 fallback 노출.
+function SuspendedOutlet() {
+    return (
+        <Suspense fallback={<RouteFallback />}>
+            <Outlet />
+        </Suspense>
+    )
+}
 
 function ProtectedRoute() {
     const at = useAuthStore((s) => s.accessToken)
-    return at ? <Outlet /> : <Navigate to="/login" replace />
+    if (!at) return <Navigate to="/login" replace />
+    return <SuspendedOutlet />
 }
 
 function GuestRoute() {
@@ -33,7 +50,7 @@ function AdminRoute() {
     const isAdmin = useIsAdmin()
     if (!at) return <Navigate to="/login" replace />
     if (!isAdmin) return <Navigate to="/" replace />
-    return <Outlet />
+    return <SuspendedOutlet />
 }
 
 export const router = createBrowserRouter([
